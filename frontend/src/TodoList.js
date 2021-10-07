@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import TodoItems from "./TodoItems";
 import "./TodoList.css";
 
+
 class TodoList extends Component {
     constructor(props) {
         super(props);
@@ -13,9 +14,15 @@ class TodoList extends Component {
         this.deleteItem = this.deleteItem.bind(this);
     }
     addItem(e) {
-        if (this._inputElement.value !== "") {
+        if (this._inputElementA.value !== ""
+        && this._inputElementB.value !== ""
+        && this._inputElementC.value !== ""
+        && this._inputElementD.value !== "") {
           var newItem = {
-            text: this._inputElement.value,
+            textA: this._inputElementA.value,
+            textB: this._inputElementB.value,
+            textC: this._inputElementC.value,
+            textD: this._inputElementD.value,
             key: Date.now()
           };
        
@@ -25,7 +32,10 @@ class TodoList extends Component {
             };
           });
          
-          this._inputElement.value = "";
+          this._inputElementA.value = "";
+          this._inputElementB.value = "";
+          this._inputElementC.value = "";
+          this._inputElementD.value = "";
         }
          
         console.log(this.state.items);
@@ -48,10 +58,19 @@ class TodoList extends Component {
         <div className="todoListMain">
           <div className="header">
             <form onSubmit={this.addItem}>
-                <input ref={(a) => this._inputElement = a} 
-                  placeholder="enter task">
-              </input>
-              <button type="submit">add</button>
+                <input ref={(a) => this._inputElementA = a} 
+                  placeholder="enter name">
+                </input>
+                <input ref={(b) => this._inputElementB = b} 
+                  placeholder="enter data1">
+                </input>
+                <input ref={(c) => this._inputElementC = c} 
+                  placeholder="enter data2">
+                </input>
+                <input ref={(d) => this._inputElementD = d} 
+                  placeholder="enter data3">
+                </input>
+                <button type="submit">add</button>
             </form>
           </div>
           <TodoItems entries={this.state.items}

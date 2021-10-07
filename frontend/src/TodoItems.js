@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import FlipMove from "react-flip-move";
+import Button from '@mui/material/Button';
  
 class TodoItems extends Component {
     constructor(props) {
@@ -13,8 +14,10 @@ class TodoItems extends Component {
     }
 
     createTasks(item) {
-        return <li onClick={() => this.delete(item.key)} 
-                key={item.key}>{item.text}</li>
+        return <li key={item.key}> 
+            {item.textA} {item.textB} {item.textC} {item.textD} 
+            <Button onClick={() => this.delete(item.key)} variant="contained">Hello World</Button>
+            </li>
     }
     
     render() {
