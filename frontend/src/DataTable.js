@@ -8,29 +8,6 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 
-function createData(id, name, data1, data2, data3) {
-    return {id, name, data1, data2, data3};
-}
-  
-var rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24),
-    createData('Ice cream sandwich', 237, 9.0, 37),
-    createData('Eclair', 262, 16.0, 24),
-    createData('Cupcake', 305, 3.7, 67),
-    createData('Gingerbread', 356, 16.0, 49),
-];
-
-function removeData(data) {
-    var index = rows.indexOf(data);
-    console.log(data);
-    console.log(rows);
-    console.log(index);
-    if (index > -1) {
-        rows.splice(index, 1);
-    }
-    console.log(rows);
-}
-  
 class DataTable extends Component{
     constructor(props) {
         super(props);
