@@ -92,6 +92,29 @@ class DataTable extends Component{
         // this.getData();
         this.getData();
     }
+    editItem(key) {
+      if (this._inputElementA.value !== ""
+        && this._inputElementB.value !== ""
+        && this._inputElementC.value !== ""
+        && this._inputElementD.value !== "") {
+          
+          const newItem = {
+            id: key,
+            name: this._inputElementA.value,
+            data1: this._inputElementB.value,
+            data2: this._inputElementC.value,
+            data3: this._inputElementD.value
+          };
+
+          set(ref(this.props.db, 'users/' + key), newItem);
+          this.getData();
+         
+          this._inputElementA.value = "";
+          this._inputElementB.value = "";
+          this._inputElementC.value = "";
+          this._inputElementD.value = "";
+        }
+    }
     
     
     render() {
@@ -124,7 +147,6 @@ class DataTable extends Component{
                         <TableCell align="right">Data1</TableCell>
                         <TableCell align="right">Data2</TableCell>
                         <TableCell align="right">Data3</TableCell>
-                        <TableCell align="right"></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -140,7 +162,8 @@ class DataTable extends Component{
                       <TableCell align="right">{row.data1}</TableCell>
                       <TableCell align="right">{row.data2}</TableCell>
                       <TableCell align="right">{row.data3}</TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">
+                        <Button onClick={() => this.editItem(row.id)} variant="contained">Edit</Button>
                         <Button onClick={() => this.deleteItem(row.id)} variant="contained">Delete</Button>
                       </TableCell>
                     </TableRow>
