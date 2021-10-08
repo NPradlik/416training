@@ -8,8 +8,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import "./TodoList.css";
-import {getDatabase, ref, set, child, get } from "firebase/database";
-import { async } from "@firebase/util";
+import {remove, ref, set, get } from "firebase/database";
+// import { async } from "@firebase/util";
 //import { chainPropTypes } from "@mui/utils";
 
 class DataTable extends Component{
@@ -18,7 +18,8 @@ class DataTable extends Component{
         
         this.idnum = 0;
         this.state = {
-          items: []
+          items: [],
+          idnum: 0
         }
         
         this.getData = this.getData.bind(this);
@@ -32,13 +33,34 @@ class DataTable extends Component{
     }
 
     getData = async () => {
-      let data = await get(ref(this.props.db, 'users/'))
-      let datavalue = data.val()
-      return this.setState((prevState) =>{
-        return {
-          items: datavalue
+      get(ref(this.props.db, 'users/')).then((data)=>{
+        if(data.exists()){
+          let datavalue = data.val()
+          console.log(datavalue);
+          datavalue = Object.values(datavalue);
+          console.log(datavalue);
+          datavalue = datavalue.filter((x)=>{
+            return x !== undefined;
+          });
+          console.log(datavalue);
+          console.log(datavalue.length);
+          console.log(datavalue[datavalue.length-1]);
+          return this.setState((prevState) =>{
+            return {
+              items: datavalue,
+              idnum: (datavalue[datavalue.length-1].id + 1)
+            }
+          });
         }
-      })
+        else{
+          return this.setState((prevState) =>{
+            return {
+              items: [],
+              idnum: 0
+            }
+          });
+        }
+      });
     }
 
     addItem(e) {
@@ -47,53 +69,32 @@ class DataTable extends Component{
         && this._inputElementC.value !== ""
         && this._inputElementD.value !== "") {
           
-          var idnum = this.idnum;
-          
           const newItem = {
+            id: this.state.idnum,
             name: this._inputElementA.value,
             data1: this._inputElementB.value,
             data2: this._inputElementC.value,
             data3: this._inputElementD.value
           };
 
-          set(ref(this.props.db, 'users/' + idnum), newItem);
-          this.idnum = this.idnum + 1;
-
-          console.log(this.state.items);
-          // this.getData();
-          const things = this.getData();
-          console.log(things[0]);
-       
-          this.setState((prevState) => {
-            return { 
-              items: prevState.items.concat(things) 
-            };
-          });
+          set(ref(this.props.db, 'users/' + this.state.idnum), newItem);
+          this.getData();
          
           this._inputElementA.value = "";
           this._inputElementB.value = "";
           this._inputElementC.value = "";
           this._inputElementD.value = "";
         }
-         
-        
-           
         e.preventDefault();
     }
     deleteItem(key) {
-        var filteredItems = this.state.items.filter(function (item) {
-          return (item.id !== key);
-        });
-        console.log.apply(filteredItems);
-       
-        this.setState({
-          items: filteredItems
-        });
+        remove(ref(this.props.db, 'users/' + key));
+        // this.getData();
+        this.getData();
     }
     
     
     render() {
-      console.log(this.state.items)
     
         return (
         <div className="todoListMain">
@@ -127,12 +128,13 @@ class DataTable extends Component{
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                  {this.state.items.map((row, index) => (
+                  {
+                  this.state.items.map((row) => (
                     <TableRow
-                    key={index}
+                    key={row.id}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                       <TableCell component="th" scope="row">
-                        {index}
+                        {row.id}
                       </TableCell>
                       <TableCell align="right">{row.name}</TableCell>
                       <TableCell align="right">{row.data1}</TableCell>
