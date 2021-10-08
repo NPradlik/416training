@@ -8,6 +8,7 @@ import DataTable from './DataTable';
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
 
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAYcdkqR_Ku_eaTdJX80hzRDAfoeZiubxQ",

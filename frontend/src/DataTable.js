@@ -8,36 +8,65 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import "./TodoList.css";
-import ref from 'firebase/database';
+import {getDatabase, ref, set, child, get } from "firebase/database";
+import { async } from "@firebase/util";
+//import { chainPropTypes } from "@mui/utils";
 
 class DataTable extends Component{
     constructor(props) {
         super(props);
-        this.state = {
-            items: []
-          };
+        
         this.idnum = 0;
-     
+        this.state = {
+          items: []
+        }
+        
+        this.getData = this.getData.bind(this);
         this.addItem = this.addItem.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
+
     }
+
+    async componentDidMount(){
+      await this.getData();
+    }
+
+    getData = async () => {
+      let data = await get(ref(this.props.db, 'users/'))
+      let datavalue = data.val()
+      return this.setState((prevState) =>{
+        return {
+          items: datavalue
+        }
+      })
+    }
+
     addItem(e) {
         if (this._inputElementA.value !== ""
         && this._inputElementB.value !== ""
         && this._inputElementC.value !== ""
         && this._inputElementD.value !== "") {
-          var newItem = {
+          
+          var idnum = this.idnum;
+          
+          const newItem = {
             name: this._inputElementA.value,
             data1: this._inputElementB.value,
             data2: this._inputElementC.value,
-            data3: this._inputElementD.value,
-            id: this.idnum
+            data3: this._inputElementD.value
           };
+
+          set(ref(this.props.db, 'users/' + idnum), newItem);
           this.idnum = this.idnum + 1;
+
+          console.log(this.state.items);
+          // this.getData();
+          const things = this.getData();
+          console.log(things[0]);
        
           this.setState((prevState) => {
             return { 
-              items: prevState.items.concat(newItem) 
+              items: prevState.items.concat(things) 
             };
           });
          
@@ -47,7 +76,7 @@ class DataTable extends Component{
           this._inputElementD.value = "";
         }
          
-        console.log(this.state.items);
+        
            
         e.preventDefault();
     }
@@ -62,7 +91,10 @@ class DataTable extends Component{
         });
     }
     
+    
     render() {
+      console.log(this.state.items)
+    
         return (
         <div className="todoListMain">
           <div className="header">
@@ -95,12 +127,12 @@ class DataTable extends Component{
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                  {this.state.items.map((row) => (
+                  {this.state.items.map((row, index) => (
                     <TableRow
-                    key={row.id}
+                    key={index}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                       <TableCell component="th" scope="row">
-                        {row.id}
+                        {index}
                       </TableCell>
                       <TableCell align="right">{row.name}</TableCell>
                       <TableCell align="right">{row.data1}</TableCell>
