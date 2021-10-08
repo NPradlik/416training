@@ -124,16 +124,16 @@ class DataTable extends Component{
           <div className="header">
             <form onSubmit={this.addItem}>
                 <input ref={(a) => this._inputElementA = a} 
-                  placeholder="enter name">
+                  placeholder="enter first name">
                 </input>
                 <input ref={(b) => this._inputElementB = b} 
-                  placeholder="enter data1">
+                  placeholder="enter last name">
                 </input>
                 <input ref={(c) => this._inputElementC = c} 
-                  placeholder="enter data2">
+                  placeholder="enter favorite food">
                 </input>
                 <input ref={(d) => this._inputElementD = d} 
-                  placeholder="enter data3">
+                  placeholder="enter email">
                 </input>
                 <button type="submit">add</button>
             </form>
@@ -143,10 +143,10 @@ class DataTable extends Component{
                 <TableHead>
                     <TableRow>
                         <TableCell>ID</TableCell>
-                        <TableCell>Name</TableCell>
-                        <TableCell align="right">Data1</TableCell>
-                        <TableCell align="right">Data2</TableCell>
-                        <TableCell align="right">Data3</TableCell>
+                        <TableCell>First Name</TableCell>
+                        <TableCell align="right">Last Name</TableCell>
+                        <TableCell align="right">Favorite Food</TableCell>
+                        <TableCell align="right">Email</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
